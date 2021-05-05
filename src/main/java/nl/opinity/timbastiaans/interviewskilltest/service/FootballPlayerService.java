@@ -1,43 +1,26 @@
 package nl.opinity.timbastiaans.interviewskilltest.service;
 
-import nl.opinity.timbastiaans.interviewskilltest.datasource.dao.FootballPlayerDao;
-import nl.opinity.timbastiaans.interviewskilltest.mo.FootballPlayer;
+import com.poiji.bind.Poiji;
+import nl.opinity.timbastiaans.interviewskilltest.domain.FootBallPlayersExcel;
 import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FootballPlayerService implements IFootballService {
 
-    @Inject
-    private FootballPlayerDao footballPlayerDao;
+    @Override
+    public List<FootBallPlayersExcel> getFootballPlayersFromExcel(MultipartFile file) throws IOException {
+        File convFile = new File(file.getOriginalFilename());
+        convFile.createNewFile();
+        FileOutputStream fos = new FileOutputStream(convFile);
+        fos.write(file.getBytes());
+        List<FootBallPlayersExcel> players = Poiji.fromExcel(convFile, FootBallPlayersExcel.class);
+        fos.close();
 
-    public FootballPlayerService(FootballPlayerDao footballPlayerDao) {
-        this.footballPlayerDao = footballPlayerDao;
-    }
-    public FootballPlayerService() {
-
-    }
-
-    public Optional<FootballPlayer> getOneFootballPlayer(int id){
-        //Usually check for authorization here
-        return footballPlayerDao.get(id);
-    }
-
-    public List<FootballPlayer> getAllFootballPlayers() {
-        //Usually check for authorization here
-        return footballPlayerDao.getAll();
-    }
-
-    public void addFootballPlayerToList(FootballPlayer player){
-        //Usually check for authorization here
-        footballPlayerDao.add(player);
-    }
-
-    public void removeFootballPlayerFromList(long id){
-        //Usually check for authorization here
-        footballPlayerDao.delete(footballPlayerDao.get(id));
+        return players;
     }
 }

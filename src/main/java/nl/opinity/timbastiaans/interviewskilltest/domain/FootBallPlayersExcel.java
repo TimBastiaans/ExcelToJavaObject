@@ -1,11 +1,12 @@
-package nl.opinity.timbastiaans.interviewskilltest.mo;
+package nl.opinity.timbastiaans.interviewskilltest.domain;
 
-import com.poiji.annotation.ExcelCell;
 import com.poiji.annotation.ExcelCellName;
 import com.poiji.annotation.ExcelRow;
+import lombok.Data;
 import nl.opinity.timbastiaans.interviewskilltest.enums.Positions;
 
-public class FootBallPlayersExcel {
+public @Data
+class FootBallPlayersExcel {
 
     @ExcelRow
     private int rowIndex;

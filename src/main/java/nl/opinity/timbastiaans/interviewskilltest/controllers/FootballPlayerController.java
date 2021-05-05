@@ -1,41 +1,23 @@
 package nl.opinity.timbastiaans.interviewskilltest.controllers;
 
-import nl.opinity.timbastiaans.interviewskilltest.mo.FootballPlayer;
+import nl.opinity.timbastiaans.interviewskilltest.dtos.FootballPlayersResponse;
 import nl.opinity.timbastiaans.interviewskilltest.service.FootballPlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
 
-@Controller
+@RestController
 public class FootballPlayerController {
 
     @Autowired
     private FootballPlayerService footballPlayerService;
 
-    @GetMapping("/{id}")
-    public Optional<FootballPlayer> GetOneFootballPlayer(@PathVariable int id){
-        return footballPlayerService.getOneFootballPlayer(id);
-    }
-
-    @GetMapping("/")
-    public List<FootballPlayer> getAllFootballPlayers(){
-        return footballPlayerService.getAllFootballPlayers();
-    }
-
     @PostMapping("/")
-    public FootballPlayer addFootballPlayer(@RequestBody FootballPlayer player){
-        footballPlayerService.addFootballPlayerToList(player);
-        System.out.println(player);
-        return player;
+    public ResponseEntity<FootballPlayersResponse> getFootballPlayersFromExcel(@RequestPart("file") MultipartFile file) throws IOException {
+        return new ResponseEntity(footballPlayerService.getFootballPlayersFromExcel(file), HttpStatus.OK);
     }
-    @PostMapping("/{id}")
-    public List<FootballPlayer> deleteFootballPlayer(@PathVariable int id){
-        footballPlayerService.removeFootballPlayerFromList(id);
-        return footballPlayerService.getAllFootballPlayers();
-    }
-
-
 }

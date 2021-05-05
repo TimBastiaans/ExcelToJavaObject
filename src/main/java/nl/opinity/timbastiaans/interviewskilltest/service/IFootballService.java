@@ -1,13 +1,10 @@
 package nl.opinity.timbastiaans.interviewskilltest.service;
 
-import nl.opinity.timbastiaans.interviewskilltest.mo.FootballPlayer;
-
+import nl.opinity.timbastiaans.interviewskilltest.domain.FootBallPlayersExcel;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 public interface IFootballService {
-        Optional<FootballPlayer> getOneFootballPlayer(int id);
-        List<FootballPlayer> getAllFootballPlayers();
-        void addFootballPlayerToList(FootballPlayer player);
-        void removeFootballPlayerFromList(long id);
+    List<FootBallPlayersExcel> getFootballPlayersFromExcel(MultipartFile file) throws IOException;
 }
